@@ -1,0 +1,66 @@
+[package]
+name = "ark-crypto-gadgets"
+version.workspace = true
+authors.workspace = true
+description = "R1CS crypto gadgets"
+include = ["Cargo.toml", "src", "README.md", "LICENSE-APACHE", "LICENSE-MIT"]
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+num-bigint = {version = "0.4", default-features = false}
+digest = { version = "0.10", default-features = false }
+blake2 = { version = "0.10", default-features = false }
+derivative = { version = "2.0", features = ["use_core"] }
+tracing = { version = "0.1", default-features = false, features = [ "attributes" ], optional = true }
+
+ark-crypto-primitives = { version = "0.5.0", default-features = false }
+ark-r1cs-std = { version = "0.5.0", optional = true, default-features = false }
+ark-relations = { version = "0.5.0", default-features = false }
+ark-std = { version = "0.5.0", default-features = false }
+ark-ff = { version = "0.5.0", default-features = false }
+ark-ec = { version = "0.5.0", default-features = false }
+ark-serialize = { version = "0.5.0", default-features = false, features = [ "derive" ] }
+
+ark-bn254 = {version = "0.5.0", optional = true, default-features = false, features = ["curve"] }
+ark-bn183 = { version = "0.5.0", optional = true, default-features = false, features = ["curve"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+ark-bn124 = { version = "0.5.0", optional = true, default-features = false, features = ["curve"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+ark-ed181 = { version = "0.5.0", optional = true, default-features = false, features = ["curve"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+ark-ed97 = { version = "0.5.0", optional = true, default-features = false, features = ["curve"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+ark-ed61 = { version = "0.5.0", optional = true, default-features = false, features = ["curve"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+ark-ed58 = { version = "0.5.0", optional = true, default-features = false, features = ["curve"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+
+[dev-dependencies]
+tracing-subscriber = { version = "0.2" }
+ark-ed-on-bn254 = { version = "0.5.0", default-features = false, features = [ "r1cs" ] }
+ark-ed-on-bn183 = { version = "0.5.0", default-features = false, features = ["r1cs"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+ark-ed-on-bn124 = { version = "0.5.0", default-features = false, features = ["r1cs"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+ark-ed-on-ed181 = { version = "0.5.0", default-features = false, features = ["r1cs"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+ark-ed-on-ed97 = { version = "0.5.0", default-features = false, features = ["r1cs"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+ark-ed-on-ed61 = { version = "0.5.0", default-features = false, features = ["r1cs"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+ark-ed-on-ed58 = { version = "0.5.0", default-features = false, features = ["r1cs"], git = "https://github.com/johannes-reinhart/ark-additional-curves.git"}
+
+
+[features]
+default = ["std"]
+std = [ "ark-relations/std", "ark-std/std", "ark-ec/std", "ark-ff/std", "ark-r1cs-std/std"]
+r1cs = [ "ark-r1cs-std", "ark-crypto-primitives/r1cs", "tracing" ]
+poseidon-parameters = [ "ark-crypto-primitives/crh"]
+poseidon-bn254 = [ "poseidon-parameters", "ark-bn254" ]
+poseidon-bn183 = [ "poseidon-parameters", "ark-bn183" ]
+poseidon-bn124 = [ "poseidon-parameters", "ark-bn124" ]
+poseidon-ed181 = [ "poseidon-parameters", "ark-ed181" ]
+poseidon-ed97 = [ "poseidon-parameters", "ark-ed97" ]
+poseidon-ed61 = [ "poseidon-parameters", "ark-ed61" ]
+poseidon-ed58 = [ "poseidon-parameters", "ark-ed58" ]
+crh = [ "poseidon-parameters" ]
+signature = [ "ark-crypto-primitives/signature", "crh" ]
+print-trace = [ "ark-std/print-trace" ]
+
+
+[[example]]
+name = "constraint-bench"
+path = "src/examples/constraint_bench.rs"
+required-features = ["r1cs", "crh", "signature"]
+test = false
+bench = false
